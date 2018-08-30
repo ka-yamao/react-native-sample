@@ -1,17 +1,18 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
+
 import {
     View,
     Text,
     TouchableOpacity,
     TextInput,
-    StyleSheet
+    StyleSheet,
 } from 'react-native';
 
 
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
-        padding: 'row',
+        padding: 20,
     }, 
     textInput: {
         flex: 3,
@@ -36,14 +37,12 @@ const styles = StyleSheet.create({
 export default class TodoInput extends Componet {
     render(){
         return (
-            // <View style={styles.container}>
-            //     <TextInput style={styles.button}>
-            //     <TouchableOpacity style={styles.button}>
-            //         <Text style={styles.buttonText}>追加</Text>
-            //     </TouchableOpacity>
-            //     </TextInput>
-            // </View>
-            <View></View>
+            <View style={styles.container}>
+        <TextInput style={styles.textInput}/>
+        <TouchableOpacity style={styles.button}>
+          <Text style={styles.buttonText}>追加</Text>
+        </TouchableOpacity>
+      </View>
         );
     }
 }
