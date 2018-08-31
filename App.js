@@ -6,18 +6,64 @@
  * @flow
  */
 
-import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+import React, { Component } from 'react';
+import { Platform, StyleSheet, Text, View, FlatList } from 'react-native';
 import TodoInput from './src/component/TodoInput';
+import TodoItem from './src/component/TodoItem';
 
+export default class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      list: []
+    };
+  }
+  delete = index => () => {
+    console.log('delete');
+    const list = [].concat(this.state.list);
+    list.splice(index, 1);
+    this.setState({
+      list
+    });
+  };
+  done = index => () => {
+    console.log('done');
+    const list = [].concat(this.state.list);
+    list[index].done = !list[index].done;
+    this.setState({
+      list
+    });
+  };
+  onPress = text => {
+    console.log(text);
+    const list = [].concat(this.state.list);
+    list.push({
+      key: Date.now(),
+      text: text,
+      done: false
+    });
 
-type Props = {};
-export default class App extends Component<Props> {
+    this.setState({ list });
+  };
   render() {
+    const { list } = this.state;
     return (
       <View style={styles.container}>
         <View style={styles.main}>
-            <TodoInput></TodoInput>
+          <TodoInput onPress={this.onPress} />
+          <View style={styles.todoListContainer}>
+            <FlatList
+              style={styles.todoList}
+              data={list}
+              renderItem={({ item, index }) => (
+                <TodoItem
+                  onDone={this.done(index)}
+                  onDelete={this.delete(index)}
+                  {...item}
+                />
+              )}
+            />
+          </View>
         </View>
       </View>
     );
@@ -27,13 +73,21 @@ export default class App extends Component<Props> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#333',
+    paddingTop: 40,
+    alignItems: 'center'
   },
   main: {
     flex: 1,
     maxWidth: 400,
-    alignItems: 'center',
-  }  
+    alignItems: 'center'
+  },
+  todoListContainer: {
+    flexDirection: 'row',
+    flex: 1
+  },
+  todoList: {
+    paddingLeft: 10,
+    paddingRight: 10
+  }
 });
