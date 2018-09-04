@@ -7,9 +7,18 @@
  */
 
 import React, { Component } from 'react';
-import { Platform, StyleSheet, Text, View, FlatList } from 'react-native';
+import {
+  Platform,
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  Button,
+  Share
+} from 'react-native';
 import TodoInput from './src/component/TodoInput';
 import TodoItem from './src/component/TodoItem';
+import ShareButton from './src/component/ShareButton';
 
 export default class App extends Component {
   constructor(props) {
@@ -45,11 +54,34 @@ export default class App extends Component {
 
     this.setState({ list });
   };
+  share = text => {
+    var content = {};
+    var options = {};
+    if (Platform.OS === 'ios') {
+      content.title = 'ios title';
+      content.message = 'ios message ' + text;
+    } else {
+      content.title = 'android title';
+      content.message = 'android message ' + text;
+      options.dialogTitle = 'Daialog Title';
+    }
+
+    Share.share(content, options)
+      .then(result => {
+        console.log('share done');
+        console.log(result);
+      })
+      .catch(errorMsg => {
+        console.log('share error');
+        console.log(errorMsg);
+      });
+  };
   render() {
     const { list } = this.state;
     return (
       <View style={styles.container}>
         <View style={styles.main}>
+          <ShareButton share={this.share} />
           <TodoInput onPress={this.onPress} />
           <View style={styles.todoListContainer}>
             <FlatList
@@ -89,5 +121,17 @@ const styles = StyleSheet.create({
   todoList: {
     paddingLeft: 10,
     paddingRight: 10
+  },
+  button: {
+    paddingTop: 5,
+    paddingBottom: 5,
+    paddingLeft: 10,
+    paddingRight: 10,
+    backgroundColor: '#008080',
+    marginLeft: 5,
+    marginRight: 5
+  },
+  textStyle: {
+    color: 'white'
   }
 });
