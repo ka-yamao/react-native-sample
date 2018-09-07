@@ -16,9 +16,13 @@ import {
   Button,
   Share
 } from 'react-native';
-import TodoInput from './src/component/TodoInput';
-import TodoItem from './src/component/TodoItem';
-import ShareButton from './src/component/ShareButton';
+import TodoInput from './TodoInput';
+import TodoItem from './TodoItem';
+import ShareButton from './ShareButton';
+import { render } from 'react-dom';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
+import store, { persistor } from '../configureStore';
 
 export default class App extends Component {
   constructor(props) {
